@@ -8,28 +8,63 @@
     npx prisma init
     
 ```
-
 ### Migrasi Data Base 
-
-**Jalankan Migrasi buat DB saat Dev** 
-buat schema db di schema.prisma baru jalankan printah di bawah. 
+**Jalankan Genrate prisma**
 ```bash 
-    npx prisma migrate dev --name init --env-file .env.dev
+    npx env-cmd -f ./config/.env.dev npx prisma generate
+```
+**Jalankan Migrasi buat DB saat Dev** 
+```bash 
+    npx  env-cmd -f ./config/.env.dev npx prisma migrate dev 
 ```
 **Jalankan Migrasi buat DB saat Prod**
 ```bash 
-    npx prisma migrate deploy --env-file .env.prod
-
+    npx dotenv -e ./config/.env.prod -- npx prisma migrate deploy
 ```
 
-Next steps:
-1. Install `dotenv`, and add `import "dotenv/config";` to your `prisma.config.ts` file to load environment variables from `.env`.
-2. Run prisma dev to start a local Prisma Postgres server.
-3. Define models in the schema.prisma file.
-4. Run prisma migrate dev to migrate your local Prisma Postgres database.
-5. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and a managed serverless Postgres database. Read: https://pris.ly/cli/beyond-orm
 
-| Perintah                    | Untuk apa                                              | Aman di Production?        |
-| --------------------------- | ------------------------------------------------------ | -------------------------- |
-| `npx prisma migrate dev`    | Membuat & menjalankan migrasi baru (auto-generate SQL) | ❌ **Jangan di production** |
-| `npx prisma migrate deploy` | Menjalankan migrasi yang sudah ada                     | ✅ **Aman di production**   |
+### Structure Folder 
+```bash 
+ |pos-api-ts
+ ├── app.ts
+ ├── config/
+ │     ├── .env.dev
+ │     ├── .env.prod
+ │     └── prisma.config.ts
+ │
+ ├── core/
+ │     ├── halper/
+ │     │     ├── HttpStatus.ts
+ │     │     ├── BaseController.ts
+ │     │     └── ErrorHandler.ts
+ │     │
+ │     ├── request/
+ │     │     └── RequestType.ts
+ │     │
+ │     └── respond/
+ │           ├── ResponseHandler.ts
+ │           └── ResponseType.ts
+ │
+ ├── controller/
+ │     └── user.controller.ts
+ │
+ ├── routes/
+ │     └── user.routes.ts
+ │
+ ├── models/
+ │     └── user.model.ts
+ │
+ └── prisma/
+       └── schema.prisma
+
+```
+### Penjelasan 
+| Folder       | Fungsinya        | Analogi             |
+| ------------ | ---------------- | ------------------- |
+| `config`     | pengaturan       | Wi-Fi & kunci toko  |
+| `core`       | alat bantu utama | toolbox             |
+| `controller` | logika utama     | pegawai toko        |
+| `routes`     | peta toko        | denah ruangan       |
+| `models`     | bentuk data      | buku catatan barang |
+| `prisma`     | database         | gudang penyimpanan  |
+| `app.ts`     | main gate        | pintu utama toko    |

@@ -13,3 +13,227 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Role {
+  id  String  @id  @default(cuid())
+  name  String  
+  description  String 
+  users  User[]
+} 
+
+model User {
+  id  String  @id  @default(cuid())
+  username  String  @unique 
+  email  String  @unique 
+  password  String 
+  roleId  String
+
+  role  Role  @relation(fields: [roleId], references: [id])
+  
+  full_name  String
+  is_active  Int  @default(1)
+  created_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  delete_at  DateTime 
+
+  StockMovement  StockMovement[]
+  order  Order[]
+}
+
+model Customer {
+  id  String  @id  @default(cuid())
+  name  String 
+  phone  Int  
+  email  String  
+  loyalty_point  Int
+  created_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+
+  order  Order[]
+}
+
+model Categories {
+  id  String  @id  @default(cuid()) 
+  name  String 
+  created_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  delete_at  DateTime
+
+  category  Product[] 
+}
+
+model Product {
+  id  String  @id  @default(cuid()) 
+  sku  String 
+  name  String
+  categoryId  String
+
+  category  Categories  @relation(fields: [categoryId], references: [id])
+  
+  created_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  delete_at DateTime
+
+  productVariant ProductVariant[]
+  stockItem  StockItems[]
+  orderItems  OrderItem[]
+  purchaseItem  PurchaseItem[]
+}
+
+model ProductVariant {
+  id  String  @id  @default(cuid())
+  productId  String
+
+  product  Product  @relation(fields: [productId],  references: [id])
+
+  name  String 
+  price_modifer  Decimal
+  sku  String  
+  stockItem  StockItems[]
+  orderItems  OrderItem[]
+  
+} 
+
+model StockItems {
+  id  String  @id  @default(cuid())
+  productId  String
+  variantId  String
+
+  product  Product  @relation(fields: [productId], references: [id])
+  variant  ProductVariant  @relation(fields: [variantId], references: [id])
+
+  quantity  Int 
+  location  String 
+  created_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  delete_at DateTime
+
+  stockMovement  StockMovement[]
+}
+
+model StockMovement {
+  id  String  @id  @default(cuid())
+  stockItemId  String  
+  createdBy  String
+  change  Int 
+  reason  Int 
+  
+  stockItem  StockItems  @relation(fields: [stockItemId], references: [id])
+  user  User  @relation(fields: [createdBy], references: [id])
+  
+  created_at  DateTime  @default(now())
+} 
+
+model Order {
+  id  String  @id  @default(cuid())
+  order_number  String 
+  userId  String  
+  customerId  String
+
+  user  User  @relation(fields: [userId], references: [id])
+  customer  Customer  @relation(fields: [customerId], references: [id])
+  
+  status  String
+  subtotal  Decimal
+  discount_total  Decimal? 
+  tax_total  Decimal? 
+  total  Decimal
+  placed_at  DateTime 
+  created_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  delete_at  DateTime
+
+  orderItems  OrderItem[]
+  payment  Payment[]
+  orderDiscount OrderDiscount[]
+}
+
+model OrderItem {
+  id  String  @id  @default(cuid())
+  orderId  String 
+  productId  String 
+  variantId  String 
+
+  order  Order  @relation(fields: [orderId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  productVariant  ProductVariant  @relation(fields: [variantId], references: [id])
+  
+  quantity  Int 
+  unit_price  Decimal
+  line_total  Decimal 
+  discount_amount  Decimal?
+} 
+
+model Payment {
+  id  String  @id  @default(cuid())
+  paymentId  String 
+
+  order  Order  @relation(fields: [paymentId], references: [id])
+  
+  paid_amount  Decimal 
+  method  String 
+  paid_at  DateTime  @default(now())
+  status  String
+}
+
+model Discount {
+  id  String  @id  @default(cuid())
+  code  String  
+  name  String 
+  type  String
+  value  Decimal
+  applies_to  String 
+  activate_from  DateTime
+  activate_to  DateTime
+  min_order_value  Decimal
+  usage_limit  Int    
+
+  orderDiscount  OrderDiscount[]
+}
+
+model OrderDiscount {
+  id  String  @id  @default(cuid())
+  orderId  String  
+  discountId  String
+
+  order  Order  @relation(fields: [orderId], references: [id])
+  discount  Discount  @relation(fields: [discountId], references: [id])
+  
+  amount_applied  Decimal  
+}
+
+model Supplier {
+  id  String  @id  @default(cuid())
+  name  String 
+  contact  Int
+  phone  Int 
+  email  String
+  purchaseOrder  PurchaseOrder[]
+}
+
+model PurchaseOrder {
+  id  String  @id  @default(cuid())
+  supplierId  String 
+  total  Decimal 
+  status  String 
+
+  supplier  Supplier  @relation(fields: [supplierId], references: [id])
+  
+  created_at  DateTime  @default(now())
+  received_at  DateTime
+  
+  purchaseItem  PurchaseItem[]
+}
+
+model PurchaseItem{
+  id  String  @id  @default(cuid())
+  purchaseOrderId  String
+  productId  String
+  
+  purchaseOrder  PurchaseOrder  @relation(fields: [purchaseOrderId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  
+  quantity  Int
+  cost_price  Decimal
+}
+
