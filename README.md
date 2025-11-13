@@ -8,8 +8,15 @@
     npx prisma init
     
 ```
+### Barang yang di perlukan  
+```bash 
+    npm install dotenv
+    npm install --save-dev tsx #pake tsx buat ngejalanin app biar aman gak ribet anjay 
+```
+
 ### Migrasi Data Base 
-**Jalankan Genrate prisma**
+1. Jalankan Perintah ini di terminal
+**Jalankan Generate prisma**
 ```bash 
     npx env-cmd -f ./config/.env.dev npx prisma generate
 ```
@@ -21,6 +28,19 @@
 ```bash 
     npx dotenv -e ./config/.env.prod -- npx prisma migrate deploy
 ```
+2. Atau bisa juga menjalankan printah ini juga 
+```bash 
+    npm run prisma:generate:dev
+    npm run prisma:migrate:dev
+```
+ini sudah tak di package.json, jadi gak perlu panjang panjang buatnya
+
+### Jalankan App 
+```bash 
+    npx env-cmd -f ./config/.env.dev npx tsx watch src/app.ts
+```
+bisa juga begini ```bash npm run dev ``` ini karena saya sudah buatkan di package json.
+
 
 
 ### Structure Folder 
