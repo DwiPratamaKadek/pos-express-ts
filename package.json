@@ -1,12 +1,10 @@
 {
   "name": "pos-api-ts",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev" : "npx env-cmd -f ./config/.env.dev npx tsx watch src/app.ts",
-
+    "dev": "npx env-cmd -f ./config/.env.dev npx tsx watch src/app.ts",
     "prisma:generate:dev": "npx env-cmd -f ./config/.env.dev npx prisma generate",
     "prisma:generate:prod": "npx env-cmd -f ./config/.env.prod npx prisma generate",
     "prisma:migrate:dev": "npx env-cmd -f ./config/.env.dev npx prisma migrate dev",
