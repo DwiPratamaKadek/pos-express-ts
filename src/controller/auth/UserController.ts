@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 
-import { RoleReq } from "../../core/request/masterdata/RoleReq";
-import { RoleModel } from "../../models/masterdata/RoleModel";
+import { UserReq } from "../../core/request/auth/UserReq";
+import { UserModel } from "../../models/auth/UserModel";
 import { BaseControler } from "../../core/halper/BaseControler";
+import { RoleModel } from "../../models/masterdata/RoleModel";
 
 const status = new BaseControler()
 
 
-export class  RoleController {
+export class UserController {
 // Request<Params, ResBody, ReqBody, Query>
 // Jadi untuk kasus kamu:
 
@@ -15,28 +16,34 @@ export class  RoleController {
 
 // ResBody → {} (atau any)
 
-// ReqBody → RoleReq
+// ReqBody → UserReq
 
 // Query → {}
 
     static async creted(
-        req: Request<{}, {}, RoleReq>,
+        req: Request<{}, {}, UserReq>,
         res: Response
     ) {
         try{
-            const role = await RoleModel.create(req.body)
-            return status.created(res, role, "Data berhasil di tambahkan")
+            const {roleId} = req.body
+            const role = await RoleModel.findByPk(roleId)
+            if(!role){
+                return status.error(res, "Role tidak di temukan")
+            }
+
+            const user = await UserModel.create(req.body)
+            return status.created(res, user, "Data berhasil di tambahkan")
         }catch(error){ 
-            return status.error(res, error, "Gagal menambahkan data")    
+            return status.error(res, error, "Gagal menambahkan data")   
         }
     } 
     
     static async get(
-        req: Request<{}, {}, RoleReq>,
+        req: Request<{}, {}, UserReq>,
         res: Response
     ) {
         try{
-            const role = await RoleModel.findAll()
+            const role = await UserModel.findAll()
             return status.success(res, role, "Berhasil menampilkan data")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
@@ -44,25 +51,25 @@ export class  RoleController {
     }
 
     static async update(
-        req: Request<{id : string}, {}, RoleReq>,
+        req: Request<{id : string}, {}, UserReq>,
         res: Response,
     ){
         try {
             const id = req.params.id
-            const role = await RoleModel.update(id, req.body)
-            return status.success(res, role, "data berhasil di update")
+            const role = await UserModel.update(id, req.body)
+            return status.success(res, role, "Data berhasil di update")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
         }
     }
 
     static async delete(
-        req: Request<{id: string}, {}, RoleReq>,
+        req: Request<{id: string}, {}, UserReq>,
         res: Response,
     ){
         try{
             const id = req.params.id
-            const role = await RoleModel.delete(id)
+            const role = await UserModel.delete(id)
             return status.success(res, role, "Data berhasil di hapus")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 

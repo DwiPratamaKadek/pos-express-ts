@@ -18,7 +18,7 @@ CREATE TABLE "User" (
     "is_active" INTEGER NOT NULL DEFAULT 1,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL,
-    "delete_at" TIMESTAMP(3) NOT NULL,
+    "delete_at" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -27,9 +27,9 @@ CREATE TABLE "User" (
 CREATE TABLE "Customer" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "phone" INTEGER NOT NULL,
+    "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "loyalty_point" INTEGER NOT NULL,
+    "loyalty_point" INTEGER,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL,
 
@@ -42,7 +42,7 @@ CREATE TABLE "Categories" (
     "name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL,
-    "delete_at" TIMESTAMP(3) NOT NULL,
+    "delete_at" TIMESTAMP(3),
 
     CONSTRAINT "Categories_pkey" PRIMARY KEY ("id")
 );
@@ -173,7 +173,7 @@ CREATE TABLE "Supplier" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "contact" INTEGER NOT NULL,
-    "phone" INTEGER NOT NULL,
+    "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
 
     CONSTRAINT "Supplier_pkey" PRIMARY KEY ("id")
