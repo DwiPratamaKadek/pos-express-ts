@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 
-import { RoleReq } from "../../core/request/masterdata/RoleReq";
-import { RoleModel } from "../../models/masterdata/RoleModel";
+import { CategoryReq } from "../../core/request/masterdata/CategoryReq";
+import { CategoryModel } from "../../models/masterdata/CategoryModel";
 import { BaseControler } from "../../core/halper/BaseControler";
 
 const status = new BaseControler()
 
 
-export class  RoleController {
+export class  CategoryController {
 // Request<Params, ResBody, ReqBody, Query>
 // Jadi untuk kasus kamu:
 
@@ -20,11 +20,18 @@ export class  RoleController {
 // Query → {}
 
     static async creted(
-        req: Request<{}, {}, RoleReq>,
+        req: Request<{}, {}, CategoryReq>,
         res: Response
     ) {
         try{
-            const role = await RoleModel.create(req.body)
+            const {name} = req.body
+            const exist = await CategoryModel.findByName(name)
+
+            if(exist) {
+                return status.error(res, exist, "Data sudah ada")
+            }
+
+            const role = await CategoryModel.create(req.body)
             return status.created(res, role, "Data berhasil di tambahkan")
         }catch(error){ 
             return status.error(res, error, "Gagal menambahkan data")    
@@ -32,40 +39,40 @@ export class  RoleController {
     } 
     
     static async get(
-        req: Request<{}, {}, RoleReq>,
+        req: Request<{}, {}, CategoryReq>,
         res: Response
     ) {
         try{
-            const role = await RoleModel.findAll()
+            const role = await CategoryModel.findAll()
             return status.success(res, role, "Berhasil menampilkan data")
         }catch(error){
-            return status.error(res, error, "Gagal menambahkan data") 
+            return status.error(res, error, "Gagal menampilkan data") 
         }
     }
 
     static async update(
-        req: Request<{id : string}, {}, RoleReq>,
+        req: Request<{id : string}, {}, CategoryReq>,
         res: Response,
     ){
         try {
             const id = req.params.id
-            const role = await RoleModel.update(id, req.body)
+            const role = await CategoryModel.update(id, req.body)
             return status.success(res, role, "data berhasil di update")
         }catch(error){
-            return status.error(res, error, "Gagal menambahkan data") 
+            return status.error(res, error, "Gagal mengupdate data") 
         }
     }
 
     static async delete(
-        req: Request<{id: string}, {}, RoleReq>,
+        req: Request<{id: string}, {}, CategoryReq>,
         res: Response,
     ){
         try{
             const id = req.params.id
-            const role = await RoleModel.delete(id)
+            const role = await CategoryModel.delete(id)
             return status.success(res, role, "Data berhasil di hapus")
         }catch(error){
-            return status.error(res, error, "Gagal menambahkan data") 
+            return status.error(res, error, "Gagal mendelete data") 
         }
     }
 }

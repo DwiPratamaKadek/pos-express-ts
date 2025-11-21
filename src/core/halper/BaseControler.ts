@@ -11,8 +11,13 @@ export class BaseControler{
         return res.status(HttpStatus.CREATED).json({success : true, data, message})
     }
 
-    error(res : Response, message = "Error"){
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success : false, message})
+    error(res : Response,error : any, message = "Error"){
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            success : false, 
+            message, 
+            error: error instanceof Error ? error.message : error
+
+        })
     }
-    
+
 }

@@ -6,6 +6,8 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+
 
 }
 
@@ -34,7 +36,7 @@ model User {
   is_active  Int  @default(1)
   created_at  DateTime  @default(now())
   update_at  DateTime  @updatedAt
-  delete_at  DateTime 
+  delete_at  DateTime? 
 
   StockMovement  StockMovement[]
   order  Order[]
@@ -43,9 +45,9 @@ model User {
 model Customer {
   id  String  @id  @default(cuid())
   name  String 
-  phone  Int  
+  phone  String  
   email  String  
-  loyalty_point  Int
+  loyalty_point  Int?
   created_at  DateTime  @default(now())
   update_at  DateTime  @updatedAt
 
@@ -57,7 +59,7 @@ model Categories {
   name  String 
   created_at  DateTime  @default(now())
   update_at  DateTime  @updatedAt
-  delete_at  DateTime
+  delete_at  DateTime?
 
   category  Product[] 
 }
@@ -206,7 +208,7 @@ model Supplier {
   id  String  @id  @default(cuid())
   name  String 
   contact  Int
-  phone  Int 
+  phone  String 
   email  String
   purchaseOrder  PurchaseOrder[]
 }
