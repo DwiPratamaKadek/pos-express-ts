@@ -24,13 +24,19 @@ export class UserController {
         req: Request<{}, {}, UserReq>,
         res: Response
     ) {
-        try{
-            const {roleId} = req.body
-            const role = await RoleModel.findByPk(roleId)
-            if(!role){
-                return status.error(res, "Role tidak di temukan")
-            }
+        const { roleId } = req.body
+        const { username } = req.body
 
+        const role = await RoleModel.findByPk(roleId)
+        const existName = await UserModel.findByName(username)
+
+        try{
+            if(existName){
+                return status.error(res, existName,  "Name sudah ada ")
+            }
+            if(!role){
+                return status.error(res, role, "Role tidak di temukan")
+            }
             const user = await UserModel.create(req.body)
             return status.created(res, user, "Data berhasil di tambahkan")
         }catch(error){ 

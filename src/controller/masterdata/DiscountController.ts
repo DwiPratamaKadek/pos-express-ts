@@ -26,13 +26,17 @@ export class  DiscountController {
         res: Response
     ) {
         const body = req.body
-        const { name } = req.body
-        const exist = await CategoryModel.findByName(name)
+        const { name, code } = req.body
+        const existCode = await DiscountModel.findByCode(code)
+        const existName = await DiscountModel.findByName(name)
 
         try{
 
-            if(!exist){
-                return status.error(res, exist, "Data sudah ada")
+            if(existCode){
+                return status.error(res, existCode, "Data sudah ada")
+            }
+            if(existName){
+                return status.error(res, existName, "Data sudah ada")
             }
             const data: Prisma.DiscountCreateInput = {
                 code: body.code,

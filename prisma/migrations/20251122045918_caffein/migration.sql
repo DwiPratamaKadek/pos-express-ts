@@ -111,7 +111,7 @@ CREATE TABLE "Order" (
     "placed_at" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL,
-    "delete_at" TIMESTAMP(3) NOT NULL,
+    "delete_at" TIMESTAMP(3),
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
