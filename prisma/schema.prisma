@@ -68,13 +68,17 @@ model Product {
   id  String  @id  @default(cuid()) 
   sku  String 
   name  String
+  price  Decimal
+  cost_price  Decimal 
+  has_variant  Boolean 
+  track_stock  Boolean 
   categoryId  String
 
   category  Categories  @relation(fields: [categoryId], references: [id])
   
   created_at  DateTime  @default(now())
   update_at  DateTime  @updatedAt
-  delete_at DateTime
+  delete_at DateTime?
 
   productVariant ProductVariant[]
   stockItem  StockItems[]
@@ -143,7 +147,7 @@ model Order {
   placed_at  DateTime 
   created_at  DateTime  @default(now())
   update_at  DateTime  @updatedAt
-  delete_at  DateTime
+  delete_at  DateTime?
 
   orderItems  OrderItem[]
   payment  Payment[]

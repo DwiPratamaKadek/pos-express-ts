@@ -52,10 +52,14 @@ CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
     "sku" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "price" DECIMAL(65,30) NOT NULL,
+    "cost_price" DECIMAL(65,30) NOT NULL,
+    "has_variant" BOOLEAN NOT NULL,
+    "track_stock" BOOLEAN NOT NULL,
     "categoryId" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL,
-    "delete_at" TIMESTAMP(3) NOT NULL,
+    "delete_at" TIMESTAMP(3),
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -111,7 +115,7 @@ CREATE TABLE "Order" (
     "placed_at" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL,
-    "delete_at" TIMESTAMP(3) NOT NULL,
+    "delete_at" TIMESTAMP(3),
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );

@@ -1,11 +1,17 @@
 import  express  from "express"
 import dotenv from "dotenv"
-import roleRoute from "./routes/masterdata/RoleRoute"
+// ---- Import Routes ----
 import userRoute from "./routes/auth/UserRoute"
+
+import roleRoute from "./routes/masterdata/RoleRoute"
 import customerRoute from "./routes/masterdata/CustomerRoute"
 import categoryRoute from "./routes/masterdata/CategoryRoute"
 import discountRoute from "./routes/masterdata/DiscountRoute"
+import productRoute from "./routes/masterdata/ProductRoute"
+import productVariantModel from "./routes/masterdata/ProductVariantRoute"
 
+import cashierRoute from "./routes/cashier/CashireRoutes"
+// ---- End Import Routes ----
 dotenv.config()
 
 const app = express()
@@ -17,6 +23,9 @@ app.use(`${path}/user`,userRoute)
 app.use(`${path}/customer`,customerRoute)
 app.use(`${path}/categories`,categoryRoute)
 app.use(`${path}/discount`,discountRoute)
+app.use(`${path}/cashier`,cashierRoute)
+app.use(`${path}/product`,productRoute)
+app.use(`${path}/variant`,productVariantModel)
 
 const PORT = process.env.PORT
 
