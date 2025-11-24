@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
 
-import { ProductReq } from "../../core/request/masterdata/ProductReq";
-import { ProductModel } from "../../models/masterdata/ProductModel";
+import { RecipeReq } from "../../core/request/inventory/RecipeReq";
+import { RecipeModel } from "../../models/inventory/RecipeModel";
 import { BaseControler } from "../../core/halper/BaseControler";
 
 const status = new BaseControler()
 
 
-export class  ProductController {
+export class  RecipeController {
 // Request<Params, ResBody, ReqBody, Query>
 // Jadi untuk kasus kamu:
 
@@ -21,22 +21,19 @@ export class  ProductController {
 // Query → {}
 
     static async creted(
-        req: Request<{}, {}, ProductReq>,
+        req: Request<{}, {}, RecipeReq>,
         res: Response
     ) {
         const body = req.body
+
         try{
-            const data: Prisma.ProductCreateInput = {
-                
-                sku : body.sku,
-                name : body.name, 
-                category : {connect : {id : body.categoryId}}, 
-                price : new Prisma.Decimal(body.price), 
-                cost_price : body.cost_price, 
-                has_variant : body.has_variant, 
-                track_stock : body.track_stock, 
+            const data: Prisma.RecipeCreateInput = {
+                product : { connect : {id : body.productId}},
+                productVariant : {connect: {id : body.variantId}},
+                ingredient : {connect : {id : body.ingredientId}}, 
+                quantity_used : new Prisma.Decimal(body.quantity_used)
             }
-            const result = await ProductModel.create(data)
+            const result = await RecipeModel.create(data)
             return status.created(res, result, "Data berhasil di tambahkan")
         }catch(error){      
             return status.error(res, error, "Gagal menambahkan data")    
@@ -44,11 +41,11 @@ export class  ProductController {
     } 
     
     static async get(
-        req: Request<{}, {}, ProductReq>,
+        req: Request<{}, {}, RecipeReq>,
         res: Response
     ) {
         try{
-            const data = await ProductModel.findAll()
+            const data = await RecipeModel.findAll()
             return status.success(res, data, "Berhasil menampilkan data")
         }catch(error){
             return status.error(res, error, "Gagal menampilkan data") 
@@ -56,25 +53,20 @@ export class  ProductController {
     }
 
     static async update(
-        req: Request<{id : string}, {}, ProductReq>,
+        req: Request<{id : string}, {}, RecipeReq>,
         res: Response,
     ){
         const id = req.params.id
         const body = req.body
 
         try {
-            const data: Prisma.ProductCreateInput = {
-                
-                sku : body.sku,
-                name : body.name, 
-                category : {connect : {id : body.categoryId}}, 
-                price : new Prisma.Decimal(body.price), 
-                cost_price : body.cost_price, 
-                has_variant : body.has_variant, 
-                track_stock : body.track_stock, 
+                const data: Prisma.RecipeCreateInput = {
+                product : { connect : {id : body.ingredientId}},
+                productVariant : {connect: {id : body.variantId}},
+                ingredient : {connect : {id : body.ingredientId}}, 
+                quantity_used : new Prisma.Decimal(body.quantity_used)
             }
-            
-            const result = await ProductModel.update(id, data)
+            const result = await RecipeModel.update(id, data)
             return status.success(res, result, "data berhasil di update")
         }catch(error){
             return status.error(res, error, "Gagal mengupdate data") 
@@ -82,12 +74,12 @@ export class  ProductController {
     }
 
     static async delete(
-        req: Request<{id: string}, {}, ProductReq>,
+        req: Request<{id: string}, {}, RecipeReq>,
         res: Response,
     ){
         try{
             const id = req.params.id
-            const data = await ProductModel.delete(id)
+            const data = await RecipeModel.delete(id)
             return status.success(res, data, "Data berhasil di hapus")
         }catch(error){
             return status.error(res, error, "Gagal mendelete data") 

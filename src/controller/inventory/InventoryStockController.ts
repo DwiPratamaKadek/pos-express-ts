@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
 
-import { ProductReq } from "../../core/request/masterdata/ProductReq";
-import { ProductModel } from "../../models/masterdata/ProductModel";
+import { InventoryStockReq } from "../../core/request/inventory/InventoryStockReq";
+import {  InventoryStockModel } from "../../models/inventory/InventoryStockModel";
 import { BaseControler } from "../../core/halper/BaseControler";
 
 const status = new BaseControler()
 
 
-export class  ProductController {
+export class  InventoryStockController {
 // Request<Params, ResBody, ReqBody, Query>
 // Jadi untuk kasus kamu:
 
@@ -21,22 +21,18 @@ export class  ProductController {
 // Query → {}
 
     static async creted(
-        req: Request<{}, {}, ProductReq>,
+        req: Request<{}, {}, InventoryStockReq>,
         res: Response
     ) {
         const body = req.body
+
         try{
-            const data: Prisma.ProductCreateInput = {
-                
-                sku : body.sku,
-                name : body.name, 
-                category : {connect : {id : body.categoryId}}, 
-                price : new Prisma.Decimal(body.price), 
-                cost_price : body.cost_price, 
-                has_variant : body.has_variant, 
-                track_stock : body.track_stock, 
+            const data: Prisma.InventoryStockCreateInput = {
+                ingredient : {connect :  { id: body.ingredientId } },
+                quantity : new Prisma.Decimal(body.quantity), 
+                location : body.location, 
             }
-            const result = await ProductModel.create(data)
+            const result = await InventoryStockModel.create(data)
             return status.created(res, result, "Data berhasil di tambahkan")
         }catch(error){      
             return status.error(res, error, "Gagal menambahkan data")    
@@ -44,11 +40,11 @@ export class  ProductController {
     } 
     
     static async get(
-        req: Request<{}, {}, ProductReq>,
+        req: Request<{}, {}, InventoryStockReq>,
         res: Response
     ) {
         try{
-            const data = await ProductModel.findAll()
+            const data = await InventoryStockModel.findAll()
             return status.success(res, data, "Berhasil menampilkan data")
         }catch(error){
             return status.error(res, error, "Gagal menampilkan data") 
@@ -56,25 +52,19 @@ export class  ProductController {
     }
 
     static async update(
-        req: Request<{id : string}, {}, ProductReq>,
+        req: Request<{id : string}, {}, InventoryStockReq>,
         res: Response,
     ){
         const id = req.params.id
         const body = req.body
 
         try {
-            const data: Prisma.ProductCreateInput = {
-                
-                sku : body.sku,
-                name : body.name, 
-                category : {connect : {id : body.categoryId}}, 
-                price : new Prisma.Decimal(body.price), 
-                cost_price : body.cost_price, 
-                has_variant : body.has_variant, 
-                track_stock : body.track_stock, 
+            const data: Prisma.InventoryStockCreateInput = {
+                ingredient : {connect :  { id: body.ingredientId } },
+                quantity : new Prisma.Decimal(body.quantity),
+                location : body.location, 
             }
-            
-            const result = await ProductModel.update(id, data)
+            const result = await InventoryStockModel.update(id, data)
             return status.success(res, result, "data berhasil di update")
         }catch(error){
             return status.error(res, error, "Gagal mengupdate data") 
@@ -82,12 +72,12 @@ export class  ProductController {
     }
 
     static async delete(
-        req: Request<{id: string}, {}, ProductReq>,
+        req: Request<{id: string}, {}, InventoryStockReq>,
         res: Response,
     ){
         try{
             const id = req.params.id
-            const data = await ProductModel.delete(id)
+            const data = await InventoryStockModel.delete(id)
             return status.success(res, data, "Data berhasil di hapus")
         }catch(error){
             return status.error(res, error, "Gagal mendelete data") 

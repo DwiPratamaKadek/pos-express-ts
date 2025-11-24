@@ -28,7 +28,7 @@ export class  ProductVariantController {
         try{
             const data : Prisma.ProductVariantCreateInput = {
                 name : body.name,
-                price_modifer : new Prisma.Decimal(body.price_modifier),
+                price_modifier : new Prisma.Decimal(body.price_modifier),
                 sku : body.sku,
                 product : { connect: {id : body.productId} }
             }
@@ -59,10 +59,10 @@ export class  ProductVariantController {
         try {
             const data : Prisma.ProductVariantCreateInput = {
                 name : body.name,
-                price_modifer : new Prisma.Decimal(body.price_modifier),
+                price_modifier : new Prisma.Decimal(body.price_modifier),
                 sku : body.sku,
                 product : { connect: {id : body.productId} }
-            }
+            }   
             const id = req.params.id
             const result = await ProductVarianModel.update(id, data)
             return status.success(res, result, "data berhasil di update")
