@@ -31,8 +31,8 @@ export class  CategoryController {
                 return status.error(res, exist, "Data sudah ada")
             }
 
-            const role = await CategoryModel.create(req.body)
-            return status.created(res, role, "Data berhasil di tambahkan")
+            const data = await CategoryModel.create(req.body)
+            return status.created(res, data, "Data berhasil di tambahkan")
         }catch(error){ 
             return status.error(res, error, "Gagal menambahkan data")    
         }
@@ -43,8 +43,8 @@ export class  CategoryController {
         res: Response
     ) {
         try{
-            const role = await CategoryModel.findAll()
-            return status.success(res, role, "Berhasil menampilkan data")
+            const data = await CategoryModel.findAll()
+            return status.success(res, data, "Berhasil menampilkan data")
         }catch(error){
             return status.error(res, error, "Gagal menampilkan data") 
         }
@@ -56,8 +56,8 @@ export class  CategoryController {
     ){
         try {
             const id = req.params.id
-            const role = await CategoryModel.update(id, req.body)
-            return status.success(res, role, "data berhasil di update")
+            const data = await CategoryModel.update(id, req.body)
+            return status.success(res, data, "data berhasil di update")
         }catch(error){
             return status.error(res, error, "Gagal mengupdate data") 
         }
@@ -69,8 +69,8 @@ export class  CategoryController {
     ){
         try{
             const id = req.params.id
-            const role = await CategoryModel.delete(id)
-            return status.success(res, role, "Data berhasil di hapus")
+            const data = await CategoryModel.delete(id)
+            return status.success(res, data, "Data berhasil di hapus")
         }catch(error){
             return status.error(res, error, "Gagal mendelete data") 
         }

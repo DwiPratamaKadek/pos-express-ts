@@ -81,53 +81,78 @@ model Product {
   delete_at DateTime?
 
   productVariant ProductVariant[]
-  stockItem  StockItems[]
   orderItems  OrderItem[]
   purchaseItem  PurchaseItem[]
+  recipe  Recipe[]
 }
 
 model ProductVariant {
   id  String  @id  @default(cuid())
   productId  String
+  name  String 
+  price_modifier  Decimal
+  sku  String  
 
   product  Product  @relation(fields: [productId],  references: [id])
 
-  name  String 
-  price_modifer  Decimal
-  sku  String  
-  stockItem  StockItems[]
   orderItems  OrderItem[]
+  recipe Recipe[]
   
 } 
 
-model StockItems {
-  id  String  @id  @default(cuid())
-  productId  String
-  variantId  String
-
-  product  Product  @relation(fields: [productId], references: [id])
-  variant  ProductVariant  @relation(fields: [variantId], references: [id])
-
-  quantity  Int 
-  location  String 
+model Ingredient {
+  id  String  @id @default(cuid())
+  name  String  
+  unit  String 
+  cost_price  Decimal? 
   created_at  DateTime  @default(now())
   update_at  DateTime  @updatedAt
-  delete_at DateTime
+
+  inventory  InventoryStock?
+  recipe Recipe[]
+  purchaseItem PurchaseItem[]
+
+}
+
+model InventoryStock {
+  id  String  @id @default(cuid())
+  ingredientId  String  @unique
+  quantity  Decimal   @default("0")
+  location  String?
+  created_at  DateTime  @default(now()) 
+  update_at  DateTime  @updatedAt
+
+  ingredient  Ingredient  @relation(fields : [ingredientId], references : [id])
 
   stockMovement  StockMovement[]
 }
 
+model Recipe {
+  id  String  @id  @default(cuid())
+  productId  String
+  variantId  String? 
+  ingredientId  String 
+  quantity_used  Decimal 
+  created_at  DateTime  @default(now())
+
+  product  Product  @relation(fields : [productId], references: [id])
+  productVariant  ProductVariant?  @relation(fields : [variantId], references: [id])
+  ingredient  Ingredient  @relation(fields : [ingredientId], references : [id])
+
+
+}
+
 model StockMovement {
   id  String  @id  @default(cuid())
-  stockItemId  String  
+  inventoryStockId  String  
   createdBy  String
-  change  Int 
-  reason  Int 
+  change  Decimal 
+  reason  Decimal? 
+  created_at  DateTime  @default(now())
   
-  stockItem  StockItems  @relation(fields: [stockItemId], references: [id])
+  inventoryStock  InventoryStock  @relation(fields: [inventoryStockId], references: [id])
   user  User  @relation(fields: [createdBy], references: [id])
   
-  created_at  DateTime  @default(now())
 } 
 
 model Order {
@@ -233,13 +258,14 @@ model PurchaseOrder {
 
 model PurchaseItem{
   id  String  @id  @default(cuid())
+  ingredientId  String
   purchaseOrderId  String
   productId  String
-  
-  purchaseOrder  PurchaseOrder  @relation(fields: [purchaseOrderId], references: [id])
-  product  Product  @relation(fields: [productId], references: [id])
-  
   quantity  Int
   cost_price  Decimal
+
+  purchaseOrder  PurchaseOrder  @relation(fields: [purchaseOrderId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  ingredient  Ingredient  @relation(fields: [ingredientId], references: [id])
 }
 

@@ -88,3 +88,14 @@ bisa juga begini ```bash npm run dev ``` ini karena saya sudah buatkan di packag
 | `models`     | bentuk data      | buku catatan barang |
 | `prisma`     | database         | gudang penyimpanan  |
 | `app.ts`     | main gate        | pintu utama toko    |
+
+
+## Kalo ada error prismanya 
+jalanin ini aja 
+```bash 
+    rm -rf node_modules
+    rm -rf prisma/generated
+    npm install
+    generate schema ulang 
+    
+```

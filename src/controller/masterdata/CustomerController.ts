@@ -49,8 +49,8 @@ export class  CustomerController {
     ){
         try {
             const id = req.params.id
-            const role = await CustomerModel.update(id, req.body)
-            return status.success(res, role, "data berhasil di update")
+            const data = await CustomerModel.update(id, req.body)
+            return status.success(res, data, "data berhasil di update")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
         }
@@ -62,8 +62,8 @@ export class  CustomerController {
     ){
         try{
             const id = req.params.id
-            const role = await CustomerModel.delete(id)
-            return status.success(res, role, "Data berhasil di hapus")
+            const data = await CustomerModel.delete(id)
+            return status.success(res, data, "Data berhasil di hapus")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
         }

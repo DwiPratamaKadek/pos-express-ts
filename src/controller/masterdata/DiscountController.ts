@@ -61,8 +61,8 @@ export class  DiscountController {
         res: Response
     ) {
         try{
-            const role = await DiscountModel.findAll()
-            return status.success(res, role, "Berhasil menampilkan data")
+            const data = await DiscountModel.findAll()
+            return status.success(res, data, "Berhasil menampilkan data")
         }catch(error){
             return status.error(res, error, "Gagal menampilkan data") 
         }
