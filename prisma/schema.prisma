@@ -147,7 +147,8 @@ model StockMovement {
   inventoryStockId  String  
   createdBy  String
   change  Decimal 
-  reason  Decimal? 
+  reason  Decimal?
+  note  String 
   created_at  DateTime  @default(now())
   
   inventoryStock  InventoryStock  @relation(fields: [inventoryStockId], references: [id])

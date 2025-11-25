@@ -93,9 +93,8 @@ bisa juga begini ```bash npm run dev ``` ini karena saya sudah buatkan di packag
 ## Kalo ada error prismanya 
 jalanin ini aja 
 ```bash 
-    rm -rf node_modules
-    rm -rf prisma/generated
+    rmdir /s /q node_modules
+    rmdir /s /q prisma\generated
     npm install
-    generate schema ulang 
-    
+    npx prisma generate 
 ```

@@ -15,6 +15,7 @@ import cashierRoute from "./routes/cashier/CashireRoutes"
 import ingredientRoute from "./routes/inventory/IngredientRoutes"
 import inventoryStockRoute  from "./routes/inventory/InventoryStockRoutes"
 import recipeRoute from "./routes/inventory/RecipeRoute"
+import stockMovementRoute from "./routes/inventory/StockMovementRoutes"
 // ---- End Import Routes ----
 dotenv.config()
 
@@ -33,6 +34,8 @@ app.use(`${path}/variant`,productVariantRoute)
 app.use(`${path}/ingredient`,ingredientRoute)
 app.use(`${path}/stock`,inventoryStockRoute)
 app.use(`${path}/recipe`,recipeRoute)
+app.use(`${path}/movement`,stockMovementRoute)
+
 
 const PORT = process.env.PORT
 
