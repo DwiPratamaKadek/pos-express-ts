@@ -118,6 +118,7 @@ CREATE TABLE "StockMovement" (
     "createdBy" TEXT NOT NULL,
     "change" DECIMAL(65,30) NOT NULL,
     "reason" DECIMAL(65,30),
+    "note" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "StockMovement_pkey" PRIMARY KEY ("id")

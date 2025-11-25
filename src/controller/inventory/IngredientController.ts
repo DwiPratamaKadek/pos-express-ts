@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client" ;
 
 import { IngredientReq } from "../../core/request/inventory/IngredientReq";
 import { IngredientModel } from "../../models/inventory/IngredientModel";
