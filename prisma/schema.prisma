@@ -147,7 +147,7 @@ model StockMovement {
   inventoryStockId  String  
   createdBy  String
   change  Decimal 
-  reason  Decimal?
+  reason  String?
   note  String 
   created_at  DateTime  @default(now())
   

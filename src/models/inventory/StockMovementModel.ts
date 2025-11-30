@@ -7,4 +7,5 @@ export const StockMovementModel = {
     update: (id: string, data: any) => prisma.stockMovement.update({where: {id}, data, include : {user : true, inventoryStock : true}}),
     delete: (id: string ) => prisma.stockMovement.delete({where: {id}}),
     findByPk: (id: string) => prisma.stockMovement.findUnique({ where: {id}, include : {user : true, inventoryStock : true}}),
+    
 }   

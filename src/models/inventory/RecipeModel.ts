@@ -7,4 +7,5 @@ export const RecipeModel = {
     update: (id: string, data: any) => prisma.recipe.update({where: {id}, data, include : {ingredient:true, product: true, productVariant : true}}),
     delete: (id: string ) => prisma.recipe.delete({where: {id}}),
     findByPk: (id: string) => prisma.recipe.findUnique({ where: {id}, include : {ingredient:true, product: true, productVariant : true}}),
-}   
+    findProduct : (product : string, variant : string) => prisma.recipe.findMany({where: {productId : product, variantId : variant}})
+}
