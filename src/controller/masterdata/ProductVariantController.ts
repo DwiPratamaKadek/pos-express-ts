@@ -4,6 +4,7 @@ import { ProductVariantReq } from "../../core/request/masterdata/ProductVariantR
 import { ProductVarianModel } from "../../models/masterdata/ProductVariantModel";
 import { BaseControler } from "../../core/halper/BaseControler";
 import { Prisma } from "@prisma/client";
+import { ProductVariantService } from "../../services/product/ProductVariantService";
 
 const status = new BaseControler()
 
@@ -26,13 +27,7 @@ export class  ProductVariantController {
     ) {
         const body = req.body
         try{
-            const data : Prisma.ProductVariantCreateInput = {
-                name : body.name,
-                price_modifier : new Prisma.Decimal(body.price_modifier),
-                sku : body.sku,
-                product : { connect: {id : body.productId} }
-            }
-            const result = await ProductVarianModel.create(data)
+            const result = await ProductVariantService.createVariant(body)
             return status.created(res, result, "Data berhasil di tambahkan")
         }catch(error){ 
             return status.error(res, error, "Gagal menambahkan data")    

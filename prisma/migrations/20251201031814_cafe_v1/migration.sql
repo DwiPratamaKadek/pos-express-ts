@@ -117,7 +117,7 @@ CREATE TABLE "StockMovement" (
     "inventoryStockId" TEXT NOT NULL,
     "createdBy" TEXT NOT NULL,
     "change" DECIMAL(65,30) NOT NULL,
-    "reason" DECIMAL(65,30),
+    "reason" TEXT,
     "note" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -148,7 +148,7 @@ CREATE TABLE "OrderItem" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
-    "variantId" TEXT NOT NULL,
+    "variantId" TEXT,
     "quantity" INTEGER NOT NULL,
     "unit_price" DECIMAL(65,30) NOT NULL,
     "line_total" DECIMAL(65,30) NOT NULL,
@@ -279,7 +279,7 @@ ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("or
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_variantId_fkey" FOREIGN KEY ("variantId") REFERENCES "ProductVariant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_variantId_fkey" FOREIGN KEY ("variantId") REFERENCES "ProductVariant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_paymentId_fkey" FOREIGN KEY ("paymentId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
