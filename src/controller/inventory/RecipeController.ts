@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { RecipeReq } from "../../core/request/inventory/RecipeReq";
 import { RecipeModel } from "../../models/inventory/RecipeModel";
 import { BaseControler } from "../../core/halper/BaseControler";
+import { RecipeService } from "../../services/inventory/RecipeService";
 
 const status = new BaseControler()
 
@@ -27,13 +28,7 @@ export class  RecipeController {
         const body = req.body
 
         try{
-            const data: Prisma.RecipeCreateInput = {
-                product : { connect : {id : body.productId}},
-                productVariant : {connect: {id : body.variantId}},
-                ingredient : {connect : {id : body.ingredientId}}, 
-                quantity_used : new Prisma.Decimal(body.quantity_used)
-            }
-            const result = await RecipeModel.create(data)
+            const result = await RecipeService.createRecipe(body)
             return status.created(res, result, "Data berhasil di tambahkan")
         }catch(error){      
             return status.error(res, error, "Gagal menambahkan data")    

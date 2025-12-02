@@ -9,13 +9,14 @@ import { RecipeModel } from "../../models/inventory/RecipeModel";
 import { InventoryStockModel } from "../../models/inventory/InventoryStockModel";
 import { StockMovementModel } from "../../models/inventory/StockMovementModel";
 
+
 export class CashierService {
     static async createOrder(body : CashierReq) {
         const orderNumber = await GenerateOrderNumber("A")
         // baut order kosongan 
         const pesan  = await OrderModel.create({
             order_number : orderNumber, 
-            status : body.status ?? "pending", 
+            status : "pending", 
             subtotal : new Prisma.Decimal(0), 
             discount_total : new Prisma.Decimal(0),
             tax_total : new Prisma.Decimal(0),
@@ -27,13 +28,13 @@ export class CashierService {
         let subtotal = new Prisma.Decimal(0) 
         // Proses semua item yang ada di req
         for( const item of body.items){
-            // ambil product
+            // mencari product pada table product id 
             const product = await ProductModel.findByPk(item.productId)
             if(!product)  throw new Error( `Product tidak di temukan ${item.productId}`)
-            // product variant
-            let unitPrice : Prisma.Decimal
+                let unitPrice : Prisma.Decimal
+            // cek product variant
             if(product.has_variant){
-                if(!item.variantId) throw new Error("Variant has required")
+                // if(!item.variantId) throw new Error("Variant has required")
                 const productVariant = await ProductVarianModel.findByPk(item.variantId) // jangan lupa await bang kocak
                 if(!productVariant) throw new Error(`Variant not found ${item.variantId}`)
                 unitPrice = new Prisma.Decimal(product.price).add(new Prisma.Decimal(productVariant.price_modifier))        
@@ -43,28 +44,40 @@ export class CashierService {
             const qty = new Prisma.Decimal(item.quantity)
             const lineTotal = unitPrice.mul(qty)
 
+            const variantId = item.variantId && item.variantId.trim() !== "" ? item.variantId : null
+
             //buat order item 
             await OrderItemModel.create({
                 orderId : pesan.id,
                 productId : item.productId, 
-                variantId : item.variantId ?? null, 
+                variantId : variantId, 
                 quantity : item.quantity, 
                 unit_price : unitPrice, 
                 line_total : lineTotal
             })
-
+            // console.log("FINAL VARIANT:", item.variantId, typeof item.variantId);
             subtotal = subtotal.plus(lineTotal)
 
             // Mengurangi stock berdasarkan recipe dimana dia akan mengambil ingredient dan akan mengurangi Inventory stock berdasarkan ingredientnya.
             const recipes = await RecipeModel.findProduct(item.productId, item.variantId)
+            if(recipes.length == 0 ){
+                throw new Error (`Product ini ${item.productId} belum memiliki recipe`)
+            }
+            console.log("RECEPE :", recipes)
 
             for(const recipe of recipes ){
                 const used = new Prisma.Decimal(recipe.quantity_used).mul(qty)
                 const stock = await InventoryStockModel.findIngredient(recipe.ingredientId)
                 // cek apakah bahan baku masih ada atau tidak
                 if(!stock) throw new Error("Stock not found!")
+
+                // cek jika stock kosong 
+                if(stock.quantity.lte(0) ) 
+                    throw new Error ("Stock tidak ada")
+
                 // cek apakah jumlah stok lebih banyak dari yang di pakai atau tidak
-                if(stock.quantity < used) throw new Error (`Bahan baku kurang ${recipe.ingredientId}`)
+                if(stock.quantity.lt(used)) 
+                    throw new Error (`Bahan baku kurang ${recipe.ingredientId}`)
                 
                 //mengurangi quantity pada inventory stock
                 await InventoryStockModel.update(stock.id, {quantity : stock.quantity.minus(used)})
@@ -74,10 +87,15 @@ export class CashierService {
                     user : { connect : {id : body.userId} }, 
                     change : used.neg(), // ini membuat nilai menjadi negatif cocok untuk tanda jika berkurang, anjay
                     reason : "sale", // ini kayaknya buat defaul aja deh, kalo ada kadaluarsa dll kan pasti melakukan pencatatan. 
-                    note : `used ini order ${pesan.id}`
+                    note : `used ini order ${pesan.order_number}`
                 })
+                console.log("STOCK RAW:", stock.quantity, typeof stock.quantity);
+                console.log("USED:", used.toString());
+                console.log("COMPARE:", new Prisma.Decimal(stock.quantity).lt(used));
+
             }
         }
+        
         // update order terbaru 
         const finalOrder = await OrderModel.update(
             pesan.id,
@@ -87,10 +105,6 @@ export class CashierService {
             }
         )
         return finalOrder               
-    }
-
-    static async updateOder(id: string, payload: CashierService){
-
     }
 
     
