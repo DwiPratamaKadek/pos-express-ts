@@ -35,6 +35,19 @@ export class CashierController {
                 return status.error(res, error, "Gagal menambahkan data")    
             }
         } 
+
+        static async get (
+            req: Request<{}, {}, CashierReq>,
+            res: Response
+        ) {
+             try{
+                const result = await OrderModel.findAll()
+                return status.created(res, result, "Data berhasil di tambahkan")
+            }catch(error){ 
+                return status.error(res, error, "Gagal menambahkan data")    
+            }
+        }
+
         
        
 }
