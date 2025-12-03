@@ -7,11 +7,13 @@
     "dev": "npx env-cmd -f ./config/.env.dev npx tsx watch src/app.ts",
     "prisma:generate:dev": "npx env-cmd -f ./config/.env.dev npx prisma generate",
     "prisma:generate:prod": "npx env-cmd -f ./config/.env.prod npx prisma generate",
+    "prisma:migrate:reset": "npx env-cmd -f ./config/.env.dev npx prisma migrate reset",
     "prisma:migrate:dev": "npx env-cmd -f ./config/.env.dev npx prisma migrate dev",
     "prisma:migrate:deploy": "npx env-cmd -f ./config/.env.prod npx prisma migrate deploy",
     "prisma:push:dev": "npx env-cmd -f ./config/.env.dev npx prisma db push",
     "prisma:status:dev": "npx env-cmd -f ./config/.env.dev npx prisma migrate status",
-    "prisma:studio:dev": " npx env-cmd -f ./config/.env.dev npx prisma studio"
+    "prisma:studio:dev": "npx env-cmd -f ./config/.env.dev npx prisma studio",
+    "prisma:reset:dev" : "npx env-cmd -f ./config/.env.dev npx prisma migrate reset"
   },
   "keywords": [],
   "author": "",

@@ -88,3 +88,34 @@ bisa juga begini ```bash npm run dev ``` ini karena saya sudah buatkan di packag
 | `models`     | bentuk data      | buku catatan barang |
 | `prisma`     | database         | gudang penyimpanan  |
 | `app.ts`     | main gate        | pintu utama toko    |
+
+
+## Kalo ada error prismanya 
+jalanin ini aja 
+```bash 
+    rmdir /s /q node_modules
+    rmdir /s /q prisma\generated
+    npm install
+    npx prisma generate 
+```
+
+## Oprator pada prisma 
+```bash 
+    | **Method**   | **Fungsi**         | **Penjelasan**                           | **Contoh**             |
+| ------------ | ------------------ | ---------------------------------------- | ---------------------- |
+| `add()`      | Penjumlahan        | Menambah dua Decimal                     | `a.add(b)`             |
+| `sub()`      | Pengurangan        | Mengurangi nilai Decimal                 | `a.sub(b)`             |
+| `mul()`      | Perkalian          | Mengalikan dua Decimal                   | `price.mul(qty)`       |
+| `div()`      | Pembagian          | Membagi satu Decimal dengan Decimal lain | `total.div(2)`         |
+| `neg()`      | Negatif            | Mengubah angka menjadi minus             | `used.neg()` → `-used` |
+| `abs()`      | Absolut            | Mengubah nilai ke bilangan positif       | `(-5).abs()` → `5`     |
+| `toNumber()` | Convert ke number  | Mengubah Decimal ke `number` JS          | `price.toNumber()`     |
+| `toString()` | Convert ke string  | Mengubah Decimal ke string               | `price.toString()`     |
+| `equals()`   | Bandingkan angka   | Cek apakah dua Decimal sama              | `a.equals(b)`          |
+| `cmp()`      | Compare            | Membandingkan (<, =, >)                  | `a.cmp(b)` → -1,0,1    |
+| `isZero()`   | Cek nol            | True jika nilai 0                        | `a.isZero()`           |
+| `floor()`    | Pembulatan kebawah | Sama seperti Math.floor                  | `a.floor()`            |
+| `ceil()`     | Pembulatan ke atas | Sama seperti Math.ceil                   | `a.ceil()`             |
+| `pow()`      | Pangkat            | Math.pow untuk Decimal                   | `a.pow(2)`             |
+
+```

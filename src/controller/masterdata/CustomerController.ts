@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 
-import { RoleReq } from "../../core/request/masterdata/RoleReq";
-import { RoleModel } from "../../models/masterdata/RoleModel";
+import { CustomerReq } from "../../core/request/masterdata/CustomerReq";
+import { CustomerModel } from "../../models/masterdata/CustomerModel";
 import { BaseControler } from "../../core/halper/BaseControler";
 
 const status = new BaseControler()
 
 
-export class  RoleController {
+export class  CustomerController {
 // Request<Params, ResBody, ReqBody, Query>
 // Jadi untuk kasus kamu:
 
@@ -20,11 +20,11 @@ export class  RoleController {
 // Query → {}
 
     static async creted(
-        req: Request<{}, {}, RoleReq>,
+        req: Request<{}, {}, CustomerReq>,
         res: Response
     ) {
         try{
-            const role = await RoleModel.create(req.body)
+            const role = await CustomerModel.create(req.body)
             return status.created(res, role, "Data berhasil di tambahkan")
         }catch(error){ 
             return status.error(res, error, "Gagal menambahkan data")    
@@ -32,11 +32,11 @@ export class  RoleController {
     } 
     
     static async get(
-        req: Request<{}, {}, RoleReq>,
+        req: Request<{}, {}, CustomerReq>,
         res: Response
     ) {
         try{
-            const role = await RoleModel.findAll()
+            const role = await CustomerModel.findAll()
             return status.success(res, role, "Berhasil menampilkan data")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
@@ -44,26 +44,26 @@ export class  RoleController {
     }
 
     static async update(
-        req: Request<{id : string}, {}, RoleReq>,
+        req: Request<{id : string}, {}, CustomerReq>,
         res: Response,
     ){
         try {
             const id = req.params.id
-            const role = await RoleModel.update(id, req.body)
-            return status.success(res, role, "data berhasil di update")
+            const data = await CustomerModel.update(id, req.body)
+            return status.success(res, data, "data berhasil di update")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
         }
     }
 
     static async delete(
-        req: Request<{id: string}, {}, RoleReq>,
+        req: Request<{id: string}, {}, CustomerReq>,
         res: Response,
     ){
         try{
             const id = req.params.id
-            const role = await RoleModel.delete(id)
-            return status.success(res, role, "Data berhasil di hapus")
+            const data = await CustomerModel.delete(id)
+            return status.success(res, data, "Data berhasil di hapus")
         }catch(error){
             return status.error(res, error, "Gagal menambahkan data") 
         }
