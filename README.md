@@ -1,87 +1,52 @@
 # POS
 ## Kafe Shop POS 
 Kafe Shop POS adalah sistem Point of Sale yang dirancang untuk membantu operasional kafe secara digital dan terstruktur. Sistem ini menyediakan berbagai fitur utama yang mendukung proses transaksi, pengelolaan stok, pencatatan kasir, serta manajemen pengguna dan akses. Dengan sistem ini, pemilik maupun staf kafe dapat bekerja lebih efisien, mengurangi kesalahan manual, dan meningkatkan akurasi data operasional.
-1. Fitur Payment (Pembayaran)
-
+## Fitur Payment (Pembayaran)
 Sistem mendukung proses pembayaran yang cepat dan akurat.
+- Kasir dapat membuat order terlebih dahulu.
+- Order dapat diberi status seperti pending, unpaid, dan paid.
+- Saat customer membayar, sistem akan mencatat:
+    - metode pembayaran (cash/QR/other),
+    - jumlah uang yang dibayar,
+    - waktu pembayaran,
+    - status pembayaran (berhasil/gagal).
+    - Terdapat validasi otomatis jika uang yang diterima kurang dari total order.
+    - Fitur ini memastikan transaksi tercatat rapi dan memudahkan rekonsiliasi harian.
 
-Kasir dapat membuat order terlebih dahulu.
-
-Order dapat diberi status seperti pending, unpaid, dan paid.
-
-Saat customer membayar, sistem akan mencatat:
-
-metode pembayaran (cash/QR/other),
-
-jumlah uang yang dibayar,
-
-waktu pembayaran,
-
-status pembayaran (berhasil/gagal).
-
-Terdapat validasi otomatis jika uang yang diterima kurang dari total order.
-
-Fitur ini memastikan transaksi tercatat rapi dan memudahkan rekonsiliasi harian.
-
-2. Fitur Stock (Inventori Bahan Baku & Produk)
-
+## Fitur Stock (Inventori Bahan Baku & Produk)
 Sistem memiliki modul untuk memantau ketersediaan bahan baku dan produk.
 
-Stok otomatis berkurang saat ada transaksi.
+- Stok otomatis berkurang saat ada transaksi.
+- Produk dapat memiliki recipe (bahan pembuat), sehingga stok bahan baku juga otomatis terpotong.
+- Jika bahan baku habis, sistem memberikan notifikasi atau menolak pembuatan order.
+- Admin dapat melakukan adjustment stok seperti penambahan, pengurangan, dan koreksi stok.
+- Fitur ini membantu kafe menjaga ketersediaan bahan dan mencegah kehabisan stok.
 
-Produk dapat memiliki recipe (bahan pembuat), sehingga stok bahan baku juga otomatis terpotong.
+## Fitur Kasir (Point of Sale)
+- Modul kasir menjadi fitur utama dalam sistem.
+- Kasir dapat memilih produk, variant (jika ada), dan jumlah.
+- Sistem menghitung subtotal, diskon, pajak, dan total otomatis.
+- Kasir dapat membuka dan menutup shift.
+- Sistem mencatat semua transaksi yang dilakukan kasir termasuk pendapatan harian.
+- Dengan modul ini, proses transaksi menjadi cepat dan minim kesalahan.
 
-Jika bahan baku habis, sistem memberikan notifikasi atau menolak pembuatan order.
+## Fitur User & Role Management
+- Sistem mendukung pengaturan pengguna yang berbeda sesuai tugas dan tanggung jawab.
+- Role (peran) dapat berupa admin, kasir, owner, atau staff dapur.
+- Setiap role memiliki hak akses yang berbeda, misalnya:
+    - Admin: kelola user, stok, laporan.
+    - Kasir: mencatat order & payment.
+    - Owner: melihat laporan dan mengelola bisnis.
+    - User login dengan akun masing-masing sehingga data lebih aman dan terkontrol.
+    - Dengan manajemen role, sistem lebih aman dan tertata.
 
-Admin dapat melakukan adjustment stok seperti penambahan, pengurangan, dan koreksi stok.
-
-Fitur ini membantu kafe menjaga ketersediaan bahan dan mencegah kehabisan stok.
-
-3. Fitur Kasir (Point of Sale)
-
-Modul kasir menjadi fitur utama dalam sistem.
-
-Kasir dapat memilih produk, variant (jika ada), dan jumlah.
-
-Sistem menghitung subtotal, diskon, pajak, dan total otomatis.
-
-Kasir dapat membuka dan menutup shift.
-
-Sistem mencatat semua transaksi yang dilakukan kasir termasuk pendapatan harian.
-
-Dengan modul ini, proses transaksi menjadi cepat dan minim kesalahan.
-
-4. Fitur User & Role Management
-
-Sistem mendukung pengaturan pengguna yang berbeda sesuai tugas dan tanggung jawab.
-
-Role (peran) dapat berupa admin, kasir, owner, atau staff dapur.
-
-Setiap role memiliki hak akses yang berbeda, misalnya:
-
-Admin: kelola user, stok, laporan.
-
-Kasir: mencatat order & payment.
-
-Owner: melihat laporan dan mengelola bisnis.
-
-User login dengan akun masing-masing sehingga data lebih aman dan terkontrol.
-
-Dengan manajemen role, sistem lebih aman dan tertata.
-
-5. Pencatatan Kasir (Cashier Log / Shift Report)
-
-Setiap kasir memiliki pencatatan aktivitas saat bekerja.
-
-Kasir dapat melakukan open shift dengan saldo awal.
-
-Selama shift, sistem mencatat jumlah transaksi, total pendapatan, dan metode pembayaran.
-
-Kasir melakukan closing shift dan sistem menghitung selisih antara saldo sistem dan saldo kasir.
-
-Data shift tersimpan sebagai laporan harian.
-
-Fitur ini memudahkan audit keuangan dan mengurangi risiko kehilangan uang.
+## Pencatatan Kasir (Cashier Log / Shift Report)
+- Setiap kasir memiliki pencatatan aktivitas saat bekerja.
+- Kasir dapat melakukan open shift dengan saldo awal.
+- Selama shift, sistem mencatat jumlah transaksi, total pendapatan, dan metode pembayaran.
+- Kasir melakukan closing shift dan sistem menghitung selisih antara saldo sistem dan saldo kasir.
+- Data shift tersimpan sebagai laporan harian.
+- Fitur ini memudahkan audit keuangan dan mengurangi risiko kehilangan uang.
 
 ## Kesimpulan
 
