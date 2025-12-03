@@ -1,3 +1,4 @@
+import { PaymentReq } from "../payment/PaymentReq";
 import { OrderItemreq } from "./OrderItemReq";
 
 export interface CashierReq {

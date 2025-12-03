@@ -8,6 +8,7 @@ import { OrderItemModel } from "../../models/cashier/OrderItemModel";
 import { RecipeModel } from "../../models/inventory/RecipeModel";
 import { InventoryStockModel } from "../../models/inventory/InventoryStockModel";
 import { StockMovementModel } from "../../models/inventory/StockMovementModel";
+import { PaymentModel } from "../../models/payment/PaymentModel";
 
 
 export class CashierService {
@@ -95,7 +96,6 @@ export class CashierService {
 
             }
         }
-        
         // update order terbaru 
         const finalOrder = await OrderModel.update(
             pesan.id,
@@ -104,6 +104,7 @@ export class CashierService {
                 total : subtotal
             }
         )
+                
         return finalOrder               
     }
 
