@@ -1,7 +1,7 @@
 import  express  from "express"
 import dotenv from "dotenv"
 // ---- Import Routes ----
-import userRoute from "./routes/auth/UserRoute"
+import authRoute from "./routes/auth/AuthRouter"
 
 import roleRoute from "./routes/masterdata/RoleRoute"
 import customerRoute from "./routes/masterdata/CustomerRoute"
@@ -26,7 +26,7 @@ const path = "/api/v1"
 
 app.use(express.json());
 app.use(`${path}/roles`,roleRoute)
-app.use(`${path}/user`,userRoute)
+app.use(`${path}/auth`,authRoute)
 app.use(`${path}/customer`,customerRoute)
 app.use(`${path}/categories`,categoryRoute)
 app.use(`${path}/discount`,discountRoute)

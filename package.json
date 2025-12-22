@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx env-cmd -f ./config/.env.dev npx tsx watch src/app.ts",
+    "prod": "npx env-cmd -f ./config/.env.prod npx tsx watch src/app.ts",
     "prisma:generate:dev": "npx env-cmd -f ./config/.env.dev npx prisma generate",
     "prisma:generate:prod": "npx env-cmd -f ./config/.env.prod npx prisma generate",
     "prisma:migrate:reset": "npx env-cmd -f ./config/.env.dev npx prisma migrate reset",
@@ -13,20 +14,26 @@
     "prisma:push:dev": "npx env-cmd -f ./config/.env.dev npx prisma db push",
     "prisma:status:dev": "npx env-cmd -f ./config/.env.dev npx prisma migrate status",
     "prisma:studio:dev": "npx env-cmd -f ./config/.env.dev npx prisma studio",
-    "prisma:reset:dev" : "npx env-cmd -f ./config/.env.dev npx prisma migrate reset"
+    "prisma:reset:dev": "npx env-cmd -f ./config/.env.dev npx prisma migrate reset"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6"
