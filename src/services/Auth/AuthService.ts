@@ -21,7 +21,8 @@ export class AuthService {
             username : req.username, 
             password : hashPassword,
             full_name : req.fullName,
-            email : req.email
+            email : req.email,
+            is_active : 0
         })
 
         return user
@@ -41,10 +42,25 @@ export class AuthService {
             email : user.email 
         }
 
+        const is_active = await UserModel.update(user.id, {is_active : 1})
+
         const accessToken = generateRefreshToken(payload)
         const refreshToken = generateRefreshToken(payload)
 
-        return {accessToken, refreshToken}
+        return {accessToken, refreshToken, is_active}
 
     }
+
+    static async logout (req : LoginReq) {
+        // cari user 
+        const user = await UserModel.findUserOrEmail(req.usernameOrEmail)
+        if(!user) throw new Error("User tidak di temukan")
+        // cari is active dulu 
+        const checkActivate = user.is_active
+        if(!checkActivate) throw new Error("User sudah logout")
+
+        const is_active = await UserModel.update(user.id, {is_active : 0})
+        return is_active
+    }
+
 }   
