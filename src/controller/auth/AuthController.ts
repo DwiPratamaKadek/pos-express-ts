@@ -42,6 +42,27 @@ export class AuthController {
         }
     }
 
+    static async logout (
+        req: Request<{}, {}, LoginReq>,
+        res: Response 
+    ) {
+        try {
+            const body = req.body
+            const result = await AuthService.logout(body)
+            // const refreshToken = req.cookies?.refreshToken
+
+            res.clearCookie("refreshToken",{
+                httpOnly : true,
+                secure : false,
+                sameSite : "none",
+            })
+
+            return status.success(res, result, "Anda sudah Logout")
+        } catch(error) {
+            return status.error(res, error, "Gagal Logout")
+        }
+    }
+
     static async Alldata (
         req: Request<{}, {}, LoginReq>,
         res: Response

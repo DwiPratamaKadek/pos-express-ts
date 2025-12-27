@@ -14,5 +14,6 @@ export const UserModel = {
                 {email : indentifier} 
             ]
         }
-    })
+    }),
+    checkActivate : ( ) => prisma.user.findFirst({where : { is_active : 0 }})
 }
